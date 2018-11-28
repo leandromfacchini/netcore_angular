@@ -1,10 +1,10 @@
 ﻿using Eventos.IO.Domain.Core.Models;
+using Eventos.IO.Domain.Models.Organizadores;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Eventos.IO.Domain.Models
+namespace Eventos.IO.Domain.Models.Eventos
 {
     public class Evento : Entity<Evento>
     {

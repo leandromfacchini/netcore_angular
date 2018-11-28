@@ -1,4 +1,4 @@
-﻿using Eventos.IO.Domain.Models;
+﻿using Eventos.IO.Domain.Models.Eventos;
 using System;
 
 namespace ConsoleTesting
