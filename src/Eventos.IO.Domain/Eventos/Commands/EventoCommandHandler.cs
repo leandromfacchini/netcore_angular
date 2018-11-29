@@ -1,12 +1,14 @@
 ﻿using Eventos.IO.Domain.CommandHandlers;
+using Eventos.IO.Domain.Core.Bus;
 using Eventos.IO.Domain.Core.Events;
-using Eventos.IO.Domain.Eventos.Commands;
+using Eventos.IO.Domain.Core.Notifications;
+using Eventos.IO.Domain.Eventos.Events;
 using Eventos.IO.Domain.Eventos.Repository;
 using Eventos.IO.Domain.Interfaces;
 using Eventos.IO.Domain.Models.Eventos;
 using System;
 
-namespace Eventos.IO.Domain.Eventos.CommandHandlers
+namespace Eventos.IO.Domain.Eventos.Commands
 {
     public class EventoCommandHandler :
         CommandHandler,
@@ -15,11 +17,15 @@ namespace Eventos.IO.Domain.Eventos.CommandHandlers
         IHandler<ExcluirEventoCommand>
     {
         private readonly IEventoRepository _eventoRepository;
+        private readonly IBus _bus;
 
         public EventoCommandHandler(IEventoRepository eventoRepository,
-            IUnitOfWork unitOfWork) : base(unitOfWork)
+            IUnitOfWork unitOfWork,
+            IBus bus,
+            IDomainNotificationHandler<DomainNotification> notifications) : base(unitOfWork, bus, notifications)
         {
             _eventoRepository = eventoRepository;
+            _bus = bus;
         }
 
         public void Handle(RegistrarEventoCommand message)
@@ -47,7 +53,10 @@ namespace Eventos.IO.Domain.Eventos.CommandHandlers
             if (Commit())
             {
                 //Notificar processo concluído.
-
+                Console.WriteLine("Evento registrado com sucesso");
+                _bus.RaiseEvent(new EventoRegistradoEvent(evento.Id,
+                    evento.Nome, evento.DataInicio, evento.DataFim, evento.Gratuito,
+                    evento.Valor, evento.Online, evento.NomeEmpresa));
             }
 
         }
