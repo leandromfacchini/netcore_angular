@@ -41,6 +41,8 @@ namespace Eventos.IO.Domain.Models.Eventos
         public Endereco Endereco { get; private set; }
         public Organizador Organizador { get; private set; }
 
+        private Evento() { }
+
         public override bool EhValido()
         {
             Validar();
@@ -74,19 +76,19 @@ namespace Eventos.IO.Domain.Models.Eventos
                     .WithMessage("O valor deve estar entre 1.00 e 50.000");
             if (Gratuito)
                 RuleFor(c => c.Valor)
-                    .ExclusiveBetween(0, 0).When(e => e.Gratuito)
-                    .WithMessage("O valor não deve ser diferente de 0 para um evento gratuito.");
+                     .Equal(0).When(e => e.Gratuito)
+                     .WithMessage("O valor não deve ser diferente de 0 para um evento gratuito.");
         }
 
         private void ValidarData()
         {
             RuleFor(c => c.DataInicio)
-                .GreaterThan(c => c.DataFim)
-                .WithMessage("A data de início deve ser maior que a data do final do evento");
+               .LessThan(c => c.DataFim)
+               .WithMessage("A data de início deve ser maior que a data do final do evento");
 
             RuleFor(c => c.DataInicio)
-                .LessThan(DateTime.Now)
-                .WithMessage("A data de início nõo deve ser menor que a data atual");
+                .GreaterThan(DateTime.Now)
+                .WithMessage("A data de início não deve ser menor que a data atual");
         }
 
         private void ValidarLocal()
@@ -109,6 +111,46 @@ namespace Eventos.IO.Domain.Models.Eventos
                 .Length(2, 150).WithMessage("O nome do organizador precisa ter entre 2 e 150 caracteres");
         }
         #endregion
+
+        public static class EventoFactory
+        {
+            public static Evento NovoEventoCompleto(
+                Guid id,
+                string nome,
+                string descCurta,
+                string descLonga,
+                DateTime dataInicio,
+                DateTime dataFim,
+                bool gratuito,
+                decimal valor,
+                bool online,
+                string nomeEmpresa,
+                Guid? organizadorId
+                )
+            {
+                var evento = new Evento()
+                {
+                    Id = id,
+                    Nome = nome,
+                    DescricaoCurta = descCurta,
+                    DescricaoLonga = descLonga,
+                    DataInicio = dataInicio,
+                    DataFim = dataFim,
+                    Gratuito = gratuito,
+                    Valor = valor,
+                    Online = online,
+                    NomeEmpresa = nomeEmpresa
+                };
+
+                if (organizadorId != null)
+                    evento.Organizador = new Organizador(organizadorId.Value);
+
+                return evento;
+
+
+            }
+        }
+
     }
 
 

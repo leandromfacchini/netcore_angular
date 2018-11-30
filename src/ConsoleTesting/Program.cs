@@ -1,33 +1,62 @@
-﻿using Eventos.IO.Domain.Models.Eventos;
+﻿using Eventos.IO.Domain.CommandHandlers;
+using Eventos.IO.Domain.Core.Commands;
+using Eventos.IO.Domain.Core.Events;
+using Eventos.IO.Domain.Eventos.Commands;
+using Eventos.IO.Domain.Interfaces;
 using System;
 
 namespace ConsoleTesting
 {
-    class Program
+    partial class Program
     {
         static void Main(string[] args)
         {
-            var evento = new Evento(
-                "",
-                DateTime.Now,
-                DateTime.Now,
-                true,
-                50,
-                false,
-                "");
+            var bus = new FakeBus();
 
-            Console.WriteLine(evento.ToString());
-            Console.WriteLine(evento.EhValido());
+            //Registro com sucesso
+            var cmd = new RegistrarEventoCommand("DevX", DateTime.Now.AddDays(1),
+                DateTime.Now.AddDays(2), true, 0, true, "Empresa");
+            Inicio(cmd);
+            bus.SendCommand(cmd);
+            Fim(cmd);
 
-            if (!evento.ValidationResult.IsValid)
-            {
-                foreach (var erro in evento.ValidationResult.Errors)
-                {
-                    Console.WriteLine(erro.ErrorMessage);
-                }
-            }
+            //Registro com erros
+            cmd = new RegistrarEventoCommand("", DateTime.Now.AddDays(2),
+               DateTime.Now.AddDays(2), false, 0, false, "");
+            Inicio(cmd);
+            bus.SendCommand(cmd);
+            Fim(cmd);
+
+            //Atualizar Evento
+            var cmd2 = new AtualizarEventoCommand(Guid.NewGuid(), "DevX", "", "", DateTime.Now.AddDays(1),
+                DateTime.Now.AddDays(2), false, 50, true, "Empresa");
+            Inicio(cmd2);
+            bus.SendCommand(cmd2);
+            Fim(cmd2);
+
+            //Excluir Evento
+            var cmd3 = new ExcluirEventoCommand(Guid.NewGuid());
+            Inicio(cmd3);
+            bus.SendCommand(cmd3);
+            Fim(cmd3);
 
             Console.ReadKey();
+        }
+
+        private static void Inicio(Message message)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Inicio do Comando: " + message.MessageType);
+        }
+
+        private static void Fim(Message message)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Fim do Comando: " + message.MessageType);
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("***************");
+            Console.WriteLine();
         }
     }
 }
