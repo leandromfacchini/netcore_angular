@@ -1,7 +1,7 @@
-﻿using Eventos.IO.Domain.Core.Models;
-using System;
+﻿using System;
+using Eventos.IO.Domain.Core.Models;
 
-namespace Eventos.IO.Domain.Models.Organizadores
+namespace Eventos.IO.Domain.Organizadores
 {
     public class Organizador : Entity<Organizador>
     {
@@ -9,6 +9,7 @@ namespace Eventos.IO.Domain.Models.Organizadores
         {
             Id = id;
         }
+
         public override bool EhValido()
         {
             throw new System.NotImplementedException();

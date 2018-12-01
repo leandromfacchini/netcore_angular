@@ -1,5 +1,5 @@
-﻿using Eventos.IO.Domain.Core.Events;
-using System;
+﻿using System;
+using Eventos.IO.Domain.Core.Events;
 
 namespace Eventos.IO.Domain.Eventos.Events
 {
@@ -23,6 +23,7 @@ namespace Eventos.IO.Domain.Eventos.Events
             Valor = valor;
             Online = online;
             NomeEmpresa = nomeEmpresa;
+
             AggregateId = id;
         }
     }

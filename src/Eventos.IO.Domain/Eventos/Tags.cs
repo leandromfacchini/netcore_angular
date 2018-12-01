@@ -1,4 +1,4 @@
-﻿namespace Eventos.IO.Domain.Models.Eventos
+﻿namespace Eventos.IO.Domain.Eventos
 {
     public class Tags
     {

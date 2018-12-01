@@ -1,5 +1,5 @@
-﻿using Eventos.IO.Domain.Core.Events;
-using System;
+﻿using System;
+using Eventos.IO.Domain.Core.Events;
 
 namespace Eventos.IO.Domain.Eventos.Events
 {

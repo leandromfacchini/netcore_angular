@@ -1,7 +1,5 @@
-﻿using Eventos.IO.Domain.Core.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Eventos.IO.Domain.Core.Commands;
 
 namespace Eventos.IO.Domain.Interfaces
 {

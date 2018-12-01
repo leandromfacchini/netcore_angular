@@ -1,12 +1,12 @@
-﻿using Eventos.IO.Domain.Core.Events;
-using System;
+﻿using System;
+using Eventos.IO.Domain.Core.Events;
 
 namespace Eventos.IO.Domain.Eventos.Events
 {
     public class EventoEventHandler :
-          IHandler<EventoRegistradoEvent>,
-          IHandler<EventoAtualizadoEvent>,
-          IHandler<EventoExcluidoEvent>
+        IHandler<EventoRegistradoEvent>,
+        IHandler<EventoAtualizadoEvent>,
+        IHandler<EventoExcluidoEvent>
     {
         public void Handle(EventoRegistradoEvent message)
         {

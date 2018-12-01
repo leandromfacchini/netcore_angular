@@ -1,5 +1,4 @@
-﻿using Eventos.IO.Domain.Core.Commands;
-using System;
+﻿using System;
 
 namespace Eventos.IO.Domain.Eventos.Commands
 {
@@ -8,8 +7,8 @@ namespace Eventos.IO.Domain.Eventos.Commands
         public AtualizarEventoCommand(
             Guid id,
             string nome,
-            string descricaoCurta,
-            string descricaoLonga,
+            string descCurta,
+            string descLonga,
             DateTime dataInicio,
             DateTime dataFim,
             bool gratuito,
@@ -19,8 +18,8 @@ namespace Eventos.IO.Domain.Eventos.Commands
         {
             Id = id;
             Nome = nome;
-            DescricaoCurta = descricaoCurta;
-            DescricaoLonga = descricaoLonga;
+            DescricaoCurta = descCurta;
+            DescricaoLonga = descLonga;
             DataInicio = dataInicio;
             DataFim = dataFim;
             Gratuito = gratuito;

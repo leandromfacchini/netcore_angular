@@ -5,28 +5,29 @@ namespace Eventos.IO.Domain.Eventos.Events
     public class EventoAtualizadoEvent : BaseEventoEvent
     {
         public EventoAtualizadoEvent(
-             Guid id,
-             string nome,
-             string descricaoCurta,
-             string descricaoLonga,
-             DateTime dataInicio,
-             DateTime dataFim,
-             bool gratuito,
-             decimal valor,
-             bool online,
-             string nomeEmpresa)
+            Guid id,
+            string nome,
+            string descCurta,
+            string descLonga,
+            DateTime dataInicio,
+            DateTime dataFim,
+            bool gratuito,
+            decimal valor,
+            bool online,
+            string nomeEmpresa)
         {
             Id = id;
             Nome = nome;
-            DescricaoCurta = descricaoCurta;
-            DescricaoLonga = descricaoLonga;
+            DescricaoCurta = descCurta;
+            DescricaoLonga = descLonga;
             DataInicio = dataInicio;
             DataFim = dataFim;
             Gratuito = gratuito;
             Valor = valor;
             Online = online;
             NomeEmpresa = nomeEmpresa;
-            AggregateId = Id;
+
+            AggregateId = id;
         }
     }
 }
