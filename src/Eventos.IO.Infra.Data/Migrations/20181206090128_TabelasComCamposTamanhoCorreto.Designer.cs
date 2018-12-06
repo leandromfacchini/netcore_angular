@@ -8,9 +8,10 @@ using Eventos.IO.Infra.Data.Context;
 namespace Eventos.IO.Infra.Data.Migrations
 {
     [DbContext(typeof(EventosContext))]
-    partial class EventosContextModelSnapshot : ModelSnapshot
+    [Migration("20181206090128_TabelasComCamposTamanhoCorreto")]
+    partial class TabelasComCamposTamanhoCorreto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.6")
