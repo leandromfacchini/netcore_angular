@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/src/Eventos.IO.Site/appsettings.json
+/src/Eventos.IO.Site/appsettings.Development.json

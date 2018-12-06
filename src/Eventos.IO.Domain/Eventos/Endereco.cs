@@ -13,7 +13,7 @@ namespace Eventos.IO.Domain.Eventos
         public string CEP { get; private set; }
         public string Cidade { get; private set; }
         public string Estado { get; private set; }
-        public Guid EventoId { get; private set; }
+        public Guid? EventoId { get; private set; }
         public virtual Evento Evento { get; private set; }
 
         public Endereco(Guid id, string logradouro, string numero, string complemento, string bairro, string cep, string cidade, string estado, Guid? eventoId)
