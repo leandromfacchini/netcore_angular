@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eventos.IO.Domain.Core", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eventos.IO.Infra.Data", "src\Eventos.IO.Infra.Data\Eventos.IO.Infra.Data.csproj", "{F9405A7D-629D-4065-9B7E-677C7A99A8C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventos.IO.Site", "src\Eventos.IO.Site\Eventos.IO.Site.csproj", "{0F120551-D341-433F-AD14-3F7F8A2575CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eventos.IO.Site", "src\Eventos.IO.Site\Eventos.IO.Site.csproj", "{0F120551-D341-433F-AD14-3F7F8A2575CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventos.IO.Application", "src\Eventos.IO.Application\Eventos.IO.Application.csproj", "{13A258C5-7DD5-4155-A0E3-934C43F8C845}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{0F120551-D341-433F-AD14-3F7F8A2575CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F120551-D341-433F-AD14-3F7F8A2575CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F120551-D341-433F-AD14-3F7F8A2575CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13A258C5-7DD5-4155-A0E3-934C43F8C845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13A258C5-7DD5-4155-A0E3-934C43F8C845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13A258C5-7DD5-4155-A0E3-934C43F8C845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13A258C5-7DD5-4155-A0E3-934C43F8C845}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{3ACE6B38-74E6-4E12-94A1-4D29C9F7A904} = {94F97B71-D3F9-4ED3-B497-B41C8AC9D7D7}
 		{F9405A7D-629D-4065-9B7E-677C7A99A8C1} = {4CBF279A-DDEF-4DE2-942D-540B6DAB75D4}
 		{0F120551-D341-433F-AD14-3F7F8A2575CC} = {39542F55-7903-4B59-B148-C8E81C52F26A}
+		{13A258C5-7DD5-4155-A0E3-934C43F8C845} = {D3FD68A2-B7B3-44FE-A577-DAC9E07B7271}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5ECBC7E0-D446-41BB-A711-D4720EB9643B}
