@@ -13,8 +13,7 @@ namespace Eventos.IO.Domain.Eventos.Commands
             bool online,
             string nomeEmpresa,
             Guid organizadorId,
-            Endereco endereco,
-            Categoria categoria
+            Guid categoriaId
             )
         {
             Nome = nome;
@@ -25,8 +24,7 @@ namespace Eventos.IO.Domain.Eventos.Commands
             Online = online;
             NomeEmpresa = nomeEmpresa;
             OrganizadorId = organizadorId;
-            Endereco = endereco;
-            Categoria = categoria;
+            CategoriaId = categoriaId;
         }
     }
 }

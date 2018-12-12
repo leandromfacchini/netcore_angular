@@ -7,6 +7,13 @@ namespace Eventos.IO.Application.ViewModels
 {
     public class EventoViewModel
     {
+        public EventoViewModel()
+        {
+            Id = Guid.NewGuid();
+            Endereco = new EnderecoViewModel();
+            Categoria = new CategoriaViewModel();
+        }
+
         [Key]
         public Guid Id { get; set; }
 
@@ -23,10 +30,14 @@ namespace Eventos.IO.Application.ViewModels
         public string DescricaoLonga { get; set; }
 
         [Display(Name = "Início do Evento")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Required(ErrorMessage = "A data é requerida")]
         public DateTime DataInicio { get; set; }
 
         [Display(Name = "Fim do Evento")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Required(ErrorMessage = "A data é requerida")]
         public DateTime DataFim { get; set; }
 
@@ -45,8 +56,11 @@ namespace Eventos.IO.Application.ViewModels
         public string NomeEmpresa { get; set; }
 
         public EnderecoViewModel Endereco { get; set; }
+
         public CategoriaViewModel Categoria { get; set; }
+
         public Guid CategoriaId { get; set; }
+
         public Guid OrganizadorId { get; set; }
 
     }
