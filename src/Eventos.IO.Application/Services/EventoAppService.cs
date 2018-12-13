@@ -1,7 +1,9 @@
-﻿using Eventos.IO.Application.Interfaces;
+﻿using AutoMapper;
+using Eventos.IO.Application.Interfaces;
 using Eventos.IO.Application.ViewModels;
 using Eventos.IO.Domain.Core.Bus;
 using Eventos.IO.Domain.Eventos.Commands;
+using Eventos.IO.Domain.Eventos.Repository;
 using System;
 using System.Collections.Generic;
 
@@ -10,46 +12,51 @@ namespace Eventos.IO.Application.Services
     public class EventoAppService : IEventoAppService
     {
         private readonly IBus _bus;
+        private readonly IMapper _mapper;
+        private readonly IEventoRepository _eventoRepository;
 
-        public EventoAppService(IBus bus)
+        public EventoAppService(IBus bus, IMapper mapper, IEventoRepository eventoRepository)
         {
             _bus = bus;
+            _mapper = mapper;
+            _eventoRepository = eventoRepository;
         }
 
         public void Registrar(EventoViewModel eventoViewModel)
         {
-            var registroCommand = new RegistrarEventoCommand();
+            var registroCommand = _mapper.Map<RegistrarEventoCommand>(eventoViewModel);
             _bus.SendCommand(registroCommand);
         }
 
         public IEnumerable<EventoViewModel> ObterEventoPorOrganizador(Guid organizadorId)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<EventoViewModel>>(_eventoRepository.ObterEventoPorOrganizador(organizadorId));
         }
 
         public EventoViewModel ObterPorId(Guid id)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<EventoViewModel>(_eventoRepository.ObterPorId(id));
         }
 
         public IEnumerable<EventoViewModel> ObterTodos()
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<EventoViewModel>>(_eventoRepository.ObterTodos());
         }
 
         public void Atualizar(EventoViewModel eventoViewModel)
         {
-            throw new NotImplementedException();
+            var atualizarEventoCommand = _mapper.Map<AtualizarEventoCommand>(eventoViewModel);
+            _bus.SendCommand(atualizarEventoCommand);
         }
 
         public void Excluir(Guid id)
         {
-            throw new NotImplementedException();
+            _bus.SendCommand(new ExcluirEventoCommand(id));
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _eventoRepository.Dispose();
         }
     }
 }
