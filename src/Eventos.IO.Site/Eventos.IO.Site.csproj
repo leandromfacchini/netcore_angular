@@ -33,6 +33,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Eventos.IO.Application\Eventos.IO.Application.csproj" />
+    <ProjectReference Include="..\Eventos.IO.Infra.CrossCutting.Bus\Eventos.IO.Infra.CrossCutting.Bus.csproj" />
+    <ProjectReference Include="..\Eventos.IO.Infra.CrossCutting.IoC\Eventos.IO.Infra.CrossCutting.IoC.csproj" />
     <ProjectReference Include="..\Eventos.IO.Infra.Data\Eventos.IO.Infra.Data.csproj" />
   </ItemGroup>
 

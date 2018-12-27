@@ -12,6 +12,11 @@ using Microsoft.Extensions.Logging;
 using Eventos.IO.Site.Data;
 using Eventos.IO.Site.Models;
 using Eventos.IO.Site.Services;
+using Eventos.IO.Application.Interfaces;
+using Eventos.IO.Application.Services;
+using Microsoft.AspNetCore.Http;
+using Eventos.IO.Infra.CrossCutting.Bus;
+using Eventos.IO.Infra.CrossCutting.IoC;
 
 namespace Eventos.IO.Site
 {
@@ -52,10 +57,15 @@ namespace Eventos.IO.Site
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            RegisterServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app,
+                              IHostingEnvironment env,
+                               ILoggerFactory loggerFactory,
+                               IHttpContextAccessor accessor)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -83,6 +93,13 @@ namespace Eventos.IO.Site
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            InMemoryBus.ContainerAccessor = () => accessor.HttpContext.RequestServices;
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            NativeInjectorBootStrapper.RegisterServices(services);
         }
     }
 }
