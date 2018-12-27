@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +8,10 @@ using Microsoft.Extensions.Logging;
 using Eventos.IO.Site.Data;
 using Eventos.IO.Site.Models;
 using Eventos.IO.Site.Services;
-using Eventos.IO.Application.Interfaces;
-using Eventos.IO.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Eventos.IO.Infra.CrossCutting.Bus;
 using Eventos.IO.Infra.CrossCutting.IoC;
+using AutoMapper;
 
 namespace Eventos.IO.Site
 {
@@ -53,6 +48,7 @@ namespace Eventos.IO.Site
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.AddAutoMapper();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
