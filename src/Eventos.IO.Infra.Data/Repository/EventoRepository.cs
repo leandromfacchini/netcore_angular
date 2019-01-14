@@ -1,4 +1,5 @@
-﻿using Eventos.IO.Domain.Eventos;
+﻿using Dapper;
+using Eventos.IO.Domain.Eventos;
 using Eventos.IO.Domain.Eventos.Repository;
 using Eventos.IO.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,15 @@ namespace Eventos.IO.Infra.Data.Repository
         public void AdicionarEndereco(Endereco endereco)
         {
             Db.Enderecos.Add(endereco);
+        }
+
+        public override IEnumerable<Evento> ObterTodos()
+        {
+            var sql = "SELECT * FROM EVENTOS E " +
+                "WHERE E.EXCLUIDO = 0 " +
+                "ORDER BY E.DATAFIM DESC ";
+
+            return Db.Database.GetDbConnection().Query<Evento>(sql);
         }
 
         public void AtualizarEndereco(Endereco endereco)
