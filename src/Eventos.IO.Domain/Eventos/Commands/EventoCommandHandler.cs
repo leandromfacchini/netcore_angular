@@ -60,7 +60,7 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
             var evento = Evento.EventoFactory.NovoEventoCompleto(message.Id, message.Nome, message.DescricaoCurta,
                 message.DescricaoLonga, message.DataInicio, message.DataFim, message.Gratuito, message.Valor,
-                message.Online, message.NomeEmpresa, null, eventoAtual.Endereco, message.CategoriaId);
+                message.Online, message.NomeEmpresa, message.OrganizadorId, eventoAtual.Endereco, message.CategoriaId);
 
             if (!EventoValido(evento)) return;
 

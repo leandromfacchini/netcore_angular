@@ -39,4 +39,8 @@
     <ProjectReference Include="..\Eventos.IO.Infra.Data\Eventos.IO.Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\Components\Summary\" />
+  </ItemGroup>
+
 </Project>
