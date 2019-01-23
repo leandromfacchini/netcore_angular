@@ -105,6 +105,10 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
+    <script>
+        ValidacoesEvento();
+    </script>
+
     @{
         if (ViewBag.RetornoPost != null)
         {

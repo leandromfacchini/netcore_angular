@@ -7,6 +7,8 @@
 
 <h2>@ViewData["Title"]</h2>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+
 <form asp-action="Create">
     <div class="form-horizontal">
         <h4>Preencha todos os dados corretamente</h4>
@@ -74,6 +76,7 @@
         <div class="form-group">
             <label asp-for="Valor" class="col-md-2 control-label"></label>
             <div class="col-md-10">
+                <input data-val-number="O valor está em formato inválido" asp-for="Valor" class="form-control" />
                 <input asp-for="Valor" class="form-control" />
                 <span asp-validation-for="Valor" class="text-danger"></span>
             </div>
@@ -110,6 +113,14 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.pt.min.js"></script>
+
+    <script>
+        ValidacoesEvento();
+    </script>
 
     @{
         if (ViewBag.RetornoPost != null)
