@@ -112,7 +112,7 @@ namespace Eventos.IO.Domain.Eventos
         {
             RuleFor(c => c.DataInicio)
                 .LessThan(c => c.DataFim)
-                .WithMessage("A data de início deve ser maior que a data do final do evento");
+                .WithMessage("A data de início deve ser menor que a data do final do evento");
 
             RuleFor(c => c.DataInicio)
                 .GreaterThan(DateTime.Now)

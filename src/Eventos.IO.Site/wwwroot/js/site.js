@@ -9,4 +9,20 @@
         return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
     }
 
+    $('#DataInicio').datepicker({
+        format: "dd/mm/yyyy",
+        startDate: "tomorrow",
+        language: "pt-BR",
+        orientation: "bottom right",
+        autoclose: true
+    });
+
+    $('#DataFim').datepicker({
+        format: "dd/mm/yyyy",
+        startDate: "tomorrow",
+        language: "pt-BR",
+        orientation: "bottom right",
+        autoclose: true
+    });
+
 }
