@@ -10,11 +10,15 @@ using Microsoft.Extensions.Options;
 using Eventos.IO.Site.Models;
 using Eventos.IO.Site.Models.AccountViewModels;
 using Eventos.IO.Site.Services;
+using Eventos.IO.Domain.Core.Notifications;
+using Eventos.IO.Application.Interfaces;
+using Eventos.IO.Application.ViewModels;
+using System;
 
 namespace Eventos.IO.Site.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -22,6 +26,7 @@ namespace Eventos.IO.Site.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        private readonly IOrganizadorAppService _organizadorAppService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -29,13 +34,17 @@ namespace Eventos.IO.Site.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IDomainNotificationHandler<DomainNotification> notifications,
+            IOrganizadorAppService organizadorAppService)
+            : base(notifications)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
+            _organizadorAppService = organizadorAppService;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -114,12 +123,22 @@ namespace Eventos.IO.Site.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    var organizador = new OrganizadorViewModel()
+                    {
+                        Id = Guid.Parse(user.Id),
+                        CPF = model.CPF,
+                        Nome = model.Nome,
+                        Email = user.Email
+                    };
+
+                    _organizadorAppService.Registrar(organizador);
+
+                    if (!OperacaoValida())
+                    {
+                        await _userManager.DeleteAsync(user);
+                        return View(model);
+                    }
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
