@@ -11,10 +11,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Eventos\Repository\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="CommandHandlers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="7.0.0" />
+    <PackageReference Include="System.Security.Claims" Version="4.3.0" />
   </ItemGroup>
 </Project>
