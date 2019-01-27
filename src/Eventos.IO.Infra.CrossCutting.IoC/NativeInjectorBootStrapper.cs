@@ -15,6 +15,7 @@ using Eventos.IO.Infra.CrossCutting.Bus;
 using Eventos.IO.Infra.Data.Context;
 using Eventos.IO.Infra.Data.Repository;
 using Eventos.IO.Infra.Data.UnitOfWork;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Eventos.IO.Infra.CrossCutting.IoC
@@ -23,6 +24,9 @@ namespace Eventos.IO.Infra.CrossCutting.IoC
     {
         public static void RegisterServices(IServiceCollection services)
         {
+            //ASPNET
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             //Application
             services.AddSingleton(Mapper.Configuration);
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<IConfigurationProvider>(), sp.GetService));

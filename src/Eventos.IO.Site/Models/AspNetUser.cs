@@ -21,17 +21,17 @@ namespace Eventos.IO.Site.Models
 
         public IEnumerable<Claim> GetClaimsIdentity()
         {
-            throw new NotImplementedException();
+            return _accessor.HttpContext.User.Claims;
         }
 
         public Guid GetUserId()
         {
-            throw new NotImplementedException();
+            return IsAuthenticated() ? Guid.Parse(_accessor.HttpContext.User.GetUserId()) : Guid.NewGuid();
         }
 
         public bool IsAuthenticated()
         {
-            throw new NotImplementedException();
+            return _accessor.HttpContext.User.Identity.IsAuthenticated;
         }
     }
 }

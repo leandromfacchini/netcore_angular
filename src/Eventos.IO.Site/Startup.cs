@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Eventos.IO.Infra.CrossCutting.Bus;
 using Eventos.IO.Infra.CrossCutting.IoC;
 using AutoMapper;
+using Eventos.IO.Domain.Interfaces;
 
 namespace Eventos.IO.Site
 {
@@ -53,6 +54,7 @@ namespace Eventos.IO.Site
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddScoped<IUser, AspNetUser>();
 
             RegisterServices(services);
         }

@@ -14,6 +14,7 @@ using Eventos.IO.Domain.Core.Notifications;
 using Eventos.IO.Application.Interfaces;
 using Eventos.IO.Application.ViewModels;
 using System;
+using Eventos.IO.Domain.Interfaces;
 
 namespace Eventos.IO.Site.Controllers
 {
@@ -36,8 +37,9 @@ namespace Eventos.IO.Site.Controllers
             ISmsSender smsSender,
             ILoggerFactory loggerFactory,
             IDomainNotificationHandler<DomainNotification> notifications,
+            IUser user,
             IOrganizadorAppService organizadorAppService)
-            : base(notifications)
+            : base(notifications, user)
         {
             _userManager = userManager;
             _signInManager = signInManager;
