@@ -5,14 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Eventos.IO.Site.Data;
-using Eventos.IO.Site.Models;
-using Eventos.IO.Site.Services;
 using Microsoft.AspNetCore.Http;
 using Eventos.IO.Infra.CrossCutting.Bus;
 using Eventos.IO.Infra.CrossCutting.IoC;
 using AutoMapper;
-using Eventos.IO.Domain.Interfaces;
+using Eventos.IO.Infra.CrossCutting.Identity.Data;
+using Eventos.IO.Infra.CrossCutting.Identity.Models;
 
 namespace Eventos.IO.Site
 {
@@ -27,7 +25,6 @@ namespace Eventos.IO.Site
 
             if (env.IsDevelopment())
             {
-                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets<Startup>();
             }
 
@@ -37,10 +34,8 @@ namespace Eventos.IO.Site
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -51,15 +46,9 @@ namespace Eventos.IO.Site
             services.AddMvc();
             services.AddAutoMapper();
 
-            // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddScoped<IUser, AspNetUser>();
-
             RegisterServices(services);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,
                               IHostingEnvironment env,
                                ILoggerFactory loggerFactory,
@@ -82,8 +71,6 @@ namespace Eventos.IO.Site
             app.UseStaticFiles();
 
             app.UseIdentity();
-
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
             {

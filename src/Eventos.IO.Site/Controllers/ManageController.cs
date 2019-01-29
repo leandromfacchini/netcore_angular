@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Eventos.IO.Site.Models;
-using Eventos.IO.Site.Models.ManageViewModels;
-using Eventos.IO.Site.Services;
+using Eventos.IO.Infra.CrossCutting.Identity.Models.ManageViewModels;
+using Eventos.IO.Infra.CrossCutting.Identity.Models;
+using Eventos.IO.Infra.CrossCutting.Identity.Services;
 
 namespace Eventos.IO.Site.Controllers
 {
