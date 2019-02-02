@@ -10,7 +10,7 @@
 
 <form asp-action="Edit">
     <div class="form-horizontal">
-       
+
         <vc:summary></vc:summary>
 
         <input type="hidden" asp-for="Id" />
@@ -89,18 +89,17 @@
             </div>
         </div>
 
-
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Atualizar Evento" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-info">Voltar para Lista</a>
             </div>
         </div>
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div id="EnderecoForm">
+    @Html.Partial("_DetalhesEndereco")
 </div>
 
 @section Scripts {
@@ -120,25 +119,7 @@
             var notificacao = ViewBag.RetornoPost.ToString().Split(',');
 
             <script>
-                toastr.options = {
-                "closeButton": false,
-                "debug": true,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": true,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-                }
-
-            toastr["@notificacao[0]"]("@notificacao[1]");
+                toastr["@notificacao[0]"]("@notificacao[1]");
             </script>
         }
     }

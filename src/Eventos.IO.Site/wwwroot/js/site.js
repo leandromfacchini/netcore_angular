@@ -25,4 +25,56 @@
         autoclose: true
     });
 
+    toastr.options = {
+        "closeButton": false,
+        "debug": true,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    $(document).ready(function () {
+
+        var $inputOnline = $("#Online");
+        var $inputGratuito = $("#Gratuito");
+
+        MostrarEndereco();
+        MostrarValor();
+
+        $inputOnline.click(function () {
+            MostrarEndereco();
+        });
+
+        $inputGratuito.click(function () {
+            MostrarValor();
+        });
+
+        function MostrarEndereco() {
+
+            if ($inputOnline.is(":checked")) {
+                $("#EnderecoForm").hide();
+            } else {
+                $("#EnderecoForm").show();
+            }
+        }
+
+        function MostrarValor() {
+
+            if ($inputGratuito.is(":checked")) {
+                $("#Valor").prop("disabled", true);
+            } else {
+                $("#Valor").prop("disabled", false);
+            }
+        }
+    });
 }
