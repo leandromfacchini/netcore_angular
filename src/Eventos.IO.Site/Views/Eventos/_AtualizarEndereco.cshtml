@@ -1,7 +1,7 @@
 ﻿@model Eventos.IO.Application.ViewModels.EventoViewModel
 
 @{
-    ViewData["Title"] = "Incluir Endereço";
+    ViewData["Title"] = "Atualizar  Endereço";
 }
 
 <div class="modal-header">
@@ -11,7 +11,7 @@
     <h4 class="modal-title">@ViewData["Title"]</h4>
 </div>
 
-<form asp-action="IncluirEndereco">
+<form asp-action="AtualizarrEndereco">
     <div class="modal-body">
         <div class="form-horizontal">
             <vc:summary />
@@ -20,7 +20,7 @@
 
             <div class="modal-footer">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Adicionar Endereço" class="btn btn-success" />
+                    <input type="submit" value="Atualizar Endereço" class="btn btn-success" />
                     <input type="button" class="btn btn-info" value="Fechar" data-dismiss="modal" />
                 </div>
             </div>

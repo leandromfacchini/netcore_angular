@@ -12,7 +12,9 @@ namespace Eventos.IO.Domain.Eventos.Commands
     public class EventoCommandHandler : CommandHandler,
         IHandler<RegistrarEventoCommand>,
         IHandler<AtualizarEventoCommand>,
-        IHandler<ExcluirEventoCommand>
+        IHandler<ExcluirEventoCommand>,
+        IHandler<IncluirEnderecoEventoCommand>,
+        IHandler<AtualizarEnderecoEventoCommand>
 
     {
         private readonly IEventoRepository _eventoRepository;
@@ -100,6 +102,16 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
             _bus.RaiseEvent(new DomainNotification(messageType, "Evento não encontrado."));
             return false;
+        }
+
+        public void Handle(IncluirEnderecoEventoCommand message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Handle(AtualizarEnderecoEventoCommand message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

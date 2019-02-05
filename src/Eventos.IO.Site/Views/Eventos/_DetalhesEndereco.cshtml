@@ -1,13 +1,12 @@
 ﻿@model Eventos.IO.Application.ViewModels.EventoViewModel
 
 <div class="panel panel-default">
-    <div class=" panel-heading">
+    <div class="panel-heading">
         <strong>Endereço do Evento</strong>
     </div>
 
     @if (Model.Endereco != null)
     {
-
         <table class="table table-hover">
             <tr>
                 <th>
@@ -57,8 +56,10 @@
                     @Html.DisplayFor(model => model.Endereco.Estado)
                 </td>
                 <td>
-                    <div asp-action="AtualizarEndereco" asp-route-id="@Model.Id" data-modal="" class="btn btn-warning">
-                        <span title="Editar" class="glyphicon glyphicon-pencil"></span>
+                    <div>
+                        <a asp-action="AtualizarEndereco" asp-route-id="@Model.Id" data-modal="" class="btn btn-warning">
+                            <span title="Editar" class="glyphicon glyphicon-pencil"></span>
+                        </a>
                     </div>
                 </td>
             </tr>
@@ -66,16 +67,13 @@
     }
     else
     {
-        <table class=" table">
+        <table class="table">
             <tr>
-                <td>
-                    <a asp-action="IncluirEndereco" asp-route-id="@Model.Id" data-modal=""
-                       class="btn btn-info">
-                        <span title="Incluir Endereço" class="glyphicon glyphicon-plus-sign">
-                            Adicionar Endereço
-                        </span>
+                <th>
+                    <a asp-action="IncluirEndereco" asp-route-id="@Model.Id" data-modal="" class="btn btn-info">
+                        <span title="Incluir Endereco" class="glyphicon glyphicon-plus-sign"></span> Adicionar Endereço
                     </a>
-                </td>
+                </th>
             </tr>
         </table>
     }

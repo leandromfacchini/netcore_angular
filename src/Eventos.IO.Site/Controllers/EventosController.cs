@@ -131,5 +131,23 @@ namespace Eventos.IO.Site.Controllers
             var eventoViewModel = _eventoAppService.ObterPorId(id.Value);
             return PartialView("_IncluirEndereco", eventoViewModel);
         }
+
+        public IActionResult AtualizarEndereco(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var eventoViewModel = _eventoAppService.ObterPorId(id.Value);
+            return PartialView("_AtualizarEndereco", eventoViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult IncluirEndereco(EventoViewModel eventoViewModel)
+        {
+            eventoViewModel.Endereco.EventoId = eventoViewModel.Id;
+        }
     }
 }

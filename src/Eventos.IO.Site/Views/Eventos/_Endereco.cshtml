@@ -47,11 +47,11 @@
             <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-group">
+    @*<div class="form-group">
         <label asp-for="Endereco.Estado" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Endereco.Estado" class="form-control" />
+            @Html.Partial("_Estados")
             <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
         </div>
-    </div>
+    </div>*@
 </div>

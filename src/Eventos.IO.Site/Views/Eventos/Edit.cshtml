@@ -99,7 +99,17 @@
 </form>
 
 <div id="EnderecoForm">
-    @Html.Partial("_DetalhesEndereco")
+    <div id="EnderecoTarget">
+        @Html.Partial("_DetalhesEndereco")
+    </div>
+</div>
+
+<div id="myModal" class="modal fade in">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="myModalContent"></div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -111,6 +121,7 @@
 
     <script>
         ValidacoesEvento();
+        AjaxModal();
     </script>
 
     @{
