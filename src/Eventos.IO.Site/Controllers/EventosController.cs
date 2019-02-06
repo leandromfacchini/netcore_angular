@@ -148,6 +148,15 @@ namespace Eventos.IO.Site.Controllers
         public IActionResult IncluirEndereco(EventoViewModel eventoViewModel)
         {
             eventoViewModel.Endereco.EventoId = eventoViewModel.Id;
+            _eventoAppService.AdicionarEndereco(eventoViewModel.Endereco);
+
+            if (OperacaoValida())
+            {
+                string data = Url.Action("ObterEndereco", "Eventos", new { id = eventoViewModel.Id });
+                return Json(new { sucess = true, url = data });
+            }
+
+            return PartialView("_IncluirEndereco", eventoViewModel);
         }
     }
 }

@@ -106,12 +106,39 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
         public void Handle(IncluirEnderecoEventoCommand message)
         {
-            throw new NotImplementedException();
+            var endereco = new Endereco(message.Id, message.Logradouro, message.Numero, message.Complemento, message.Bairro, message.CEP, message.Cidade, message.Estado, message.EventoId);
+
+            if (!endereco.EhValido())
+            {
+                NotificarValidacoesErro(endereco.ValidationResult);
+                return;
+            }
+
+            _eventoRepository.AdicionarEndereco(endereco);
+
+            if (Commit())
+            {
+                _bus.RaiseEvent(new EnderecoEventoAdicionadoEvent(endereco.Id, endereco.Logradouro, endereco.Numero, endereco.Complemento, endereco.Bairro, endereco.CEP, endereco.Cidade, endereco.Estado, endereco.EventoId.Value);
+            }
         }
 
         public void Handle(AtualizarEnderecoEventoCommand message)
         {
-            throw new NotImplementedException();
+            var endereco = new Endereco(message.Id, message.Logradouro, message.Numero, message.Complemento, message.Bairro, message.CEP, message.Cidade, message.Estado, message.EventoId);
+
+            if (!endereco.EhValido())
+            {
+                NotificarValidacoesErro(endereco.ValidationResult);
+                return;
+            }
+
+            _eventoRepository.AtualizarEndereco(endereco);
+
+            if (Commit())
+            {
+                _bus.RaiseEvent(new EnderecoEventoAtualizadoEvent(message.Id, message.Logradouro, message.Numero, message.Complemento, message.Bairro, message.CEP, message.Cidade, message.Estado, message.EventoId));
+
+            }
         }
     }
 }

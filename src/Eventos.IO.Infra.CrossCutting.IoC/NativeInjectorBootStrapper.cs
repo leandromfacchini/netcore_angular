@@ -40,6 +40,8 @@ namespace Eventos.IO.Infra.CrossCutting.IoC
             services.AddScoped<IHandler<AtualizarEventoCommand>, EventoCommandHandler>();
             services.AddScoped<IHandler<ExcluirEventoCommand>, EventoCommandHandler>();
             services.AddScoped<IHandler<RegistrarOrganizadorCommand>, OrganizadorCommandHanlder>();
+            services.AddScoped<IHandler<AtualizarEnderecoEventoCommand>, EventoCommandHandler>();
+            services.AddScoped<IHandler<IncluirEnderecoEventoCommand>, EventoCommandHandler>();
 
             //Domain - Eventos
             services.AddScoped<IDomainNotificationHandler<DomainNotification>, DomainNotificationHandler>();
@@ -47,6 +49,8 @@ namespace Eventos.IO.Infra.CrossCutting.IoC
             services.AddScoped<IHandler<EventoAtualizadoEvent>, EventoEventHandler>();
             services.AddScoped<IHandler<EventoExcluidoEvent>, EventoEventHandler>();
             services.AddScoped<IHandler<OrganizadorRegistradoEvent>, OrganizadorEventHandler>();
+            services.AddScoped<IHandler<EnderecoEventoAdicionadoEvent>, EventoEventHandler>();
+            services.AddScoped<IHandler<EnderecoEventoAtualizadoEvent>, EventoEventHandler>();
 
             //Infra - Data
             services.AddScoped<IEventoRepository, EventoRepository>();

@@ -33,6 +33,12 @@ namespace Eventos.IO.Domain.Eventos
         //Construtor para ED
         protected Endereco() { }
 
+        public Endereco(Guid id, string logradouro, object nume)
+        {
+            Id = id;
+            Logradouro = logradouro;
+        }
+
         public override bool EhValido()
         {
             RuleFor(c => c.Logradouro)

@@ -62,12 +62,13 @@ namespace Eventos.IO.Application.Services
 
         public void AtualizarEndereco(EnderecoViewModel enderecoViewModel)
         {
-            
+            var enderecoCommand = Mapper.Map<AtualizarEnderecoEventoCommand>(enderecoViewModel]);
+            _bus.SendCommand(enderecoCommand);
         }
 
         public EnderecoViewModel ObterEnderecoPorId(Guid id)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<EnderecoViewModel>(_eventoRepository.ObterEnderecoPorId(id));
         }
 
         public void Dispose()
