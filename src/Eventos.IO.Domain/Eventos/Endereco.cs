@@ -26,7 +26,7 @@ namespace Eventos.IO.Domain.Eventos
             CEP = cep;
             Cidade = cidade;
             Estado = estado;
-            EventoId = EventoId;
+            EventoId = eventoId;
         }
 
 

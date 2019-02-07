@@ -106,7 +106,7 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
         public void Handle(IncluirEnderecoEventoCommand message)
         {
-            var endereco = new Endereco(message.Id, message.Logradouro, message.Numero, message.Complemento, message.Bairro, message.CEP, message.Cidade, message.Estado, message.EventoId);
+            var endereco = new Endereco(message.Id, message.Logradouro, message.Numero, message.Complemento, message.Bairro, message.CEP, message.Cidade, message.Estado, message.EventoId.Value);
 
             if (!endereco.EhValido())
             {
@@ -118,7 +118,7 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
             if (Commit())
             {
-                _bus.RaiseEvent(new EnderecoEventoAdicionadoEvent(endereco.Id, endereco.Logradouro, endereco.Numero, endereco.Complemento, endereco.Bairro, endereco.CEP, endereco.Cidade, endereco.Estado, endereco.EventoId.Value);
+                _bus.RaiseEvent(new EnderecoEventoAdicionadoEvent(endereco.Id, endereco.Logradouro, endereco.Numero, endereco.Complemento, endereco.Bairro, endereco.CEP, endereco.Cidade, endereco.Estado, endereco.EventoId.Value));
             }
         }
 
@@ -136,7 +136,7 @@ namespace Eventos.IO.Domain.Eventos.Commands
 
             if (Commit())
             {
-                _bus.RaiseEvent(new EnderecoEventoAtualizadoEvent(message.Id, message.Logradouro, message.Numero, message.Complemento, message.Bairro, message.CEP, message.Cidade, message.Estado, message.EventoId));
+                _bus.RaiseEvent(new EnderecoEventoAtualizadoEvent(message.Id, message.Logradouro, message.Numero, message.Complemento, message.Bairro, message.CEP, message.Cidade, message.Estado, message.EventoId.Value));
 
             }
         }

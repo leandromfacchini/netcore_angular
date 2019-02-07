@@ -62,7 +62,7 @@ namespace Eventos.IO.Application.Services
 
         public void AtualizarEndereco(EnderecoViewModel enderecoViewModel)
         {
-            var enderecoCommand = Mapper.Map<AtualizarEnderecoEventoCommand>(enderecoViewModel]);
+            var enderecoCommand = Mapper.Map<AtualizarEnderecoEventoCommand>(enderecoViewModel);
             _bus.SendCommand(enderecoCommand);
         }
 

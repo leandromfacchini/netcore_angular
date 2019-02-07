@@ -152,11 +152,31 @@ namespace Eventos.IO.Site.Controllers
 
             if (OperacaoValida())
             {
-                string data = Url.Action("ObterEndereco", "Eventos", new { id = eventoViewModel.Id });
-                return Json(new { sucess = true, url = data });
+                string url = Url.Action("ObterEndereco", "Eventos", new { id = eventoViewModel.Endereco.Id });
+                return Json(new { sucess = true, url = url });
             }
 
             return PartialView("_IncluirEndereco", eventoViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AtualizarEndereco(EventoViewModel eventoViewModel)
+        {
+            _eventoAppService.AtualizarEndereco(eventoViewModel.Endereco);
+
+            if (OperacaoValida())
+            {
+                string url = Url.Action("ObterEndereco", "Eventos", new { id = eventoViewModel.Id });
+                return Json(new { sucess = true, url = url });
+            }
+
+            return PartialView("_AtualizarEndereco", eventoViewModel);
+        }
+
+        public IActionResult ObterEndereco(Guid id)
+        {
+            return PartialView("_DetalhesEndereco", _eventoAppService.ObterEnderecoPorId(id));
         }
     }
 }

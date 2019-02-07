@@ -107,8 +107,8 @@ function AjaxModal() {
                     type: this.method,
                     data: $(this).serialize(),
                     success: function (result) {
-                        if (resul.sucess) {
-                            $('#myModa').modal('hide');
+                        if (result.sucess) {
+                            $('#myModal').modal('hide');
                             $('#EnderecoTarget').load(result.url);
                         } else {
                             $("#myModalContent").html(result);
