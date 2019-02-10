@@ -86,11 +86,20 @@ namespace Eventos.IO.Site.Controllers
         {
             if (!ModelState.IsValid) return View(eventoViewModel);
 
+            eventoViewModel.OrganizadorId = organizadorId;
             _eventoAppService.Atualizar(eventoViewModel);
 
             //TODO: Validar se a operação ocorreu com sucesso
 
             ViewBag.RetornoPost = OperacaoValida() ? "success, Evento atualizado com sucesso" : "error, Evento não pode ser atualizado! Verifique as mensagens";
+            if (_eventoAppService.ObterPorId(eventoViewModel.Id).Online)
+            {
+                eventoViewModel.Endereco = null;
+            }
+            else
+            {
+                eventoViewModel = _eventoAppService.ObterPorId(eventoViewModel.Id);
+            }
 
             return View(eventoViewModel);
         }
@@ -147,13 +156,14 @@ namespace Eventos.IO.Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult IncluirEndereco(EventoViewModel eventoViewModel)
         {
+            ModelState.Clear();
             eventoViewModel.Endereco.EventoId = eventoViewModel.Id;
             _eventoAppService.AdicionarEndereco(eventoViewModel.Endereco);
 
             if (OperacaoValida())
             {
-                string url = Url.Action("ObterEndereco", "Eventos", new { id = eventoViewModel.Endereco.Id });
-                return Json(new { sucess = true, url = url });
+                var url = Url.Action("ObterEndereco", "Eventos", new { id = eventoViewModel.Id });
+                return Json(new { success = true, url = url });
             }
 
             return PartialView("_IncluirEndereco", eventoViewModel);
@@ -163,12 +173,13 @@ namespace Eventos.IO.Site.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AtualizarEndereco(EventoViewModel eventoViewModel)
         {
+            ModelState.Clear();
             _eventoAppService.AtualizarEndereco(eventoViewModel.Endereco);
 
             if (OperacaoValida())
             {
                 string url = Url.Action("ObterEndereco", "Eventos", new { id = eventoViewModel.Id });
-                return Json(new { sucess = true, url = url });
+                return Json(new { success = true, url = url });
             }
 
             return PartialView("_AtualizarEndereco", eventoViewModel);
@@ -176,7 +187,7 @@ namespace Eventos.IO.Site.Controllers
 
         public IActionResult ObterEndereco(Guid id)
         {
-            return PartialView("_DetalhesEndereco", _eventoAppService.ObterEnderecoPorId(id));
+            return PartialView("_DetalhesEndereco", _eventoAppService.ObterPorId(id));
         }
     }
 }

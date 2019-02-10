@@ -64,6 +64,12 @@ namespace Eventos.IO.Domain.Eventos.Commands
                 message.DescricaoLonga, message.DataInicio, message.DataFim, message.Gratuito, message.Valor,
                 message.Online, message.NomeEmpresa, message.OrganizadorId, eventoAtual.Endereco, message.CategoriaId);
 
+            if (!evento.Online && evento.Endereco == null)
+            {
+                _bus.RaiseEvent(new DomainNotification(message.MessageType, "Não é possivel atualizar um evento sem informar o endereço!"));
+                return;
+            }
+
             if (!EventoValido(evento)) return;
 
             _eventoRepository.Atualizar(evento);

@@ -80,16 +80,15 @@
 }
 
 function AjaxModal() {
-
     $(document).ready(function () {
         $(function () {
             $.ajaxSetup({ cache: false });
 
             $("a[data-modal]").on("click",
                 function (e) {
-                    $("#myModalContent").load(this.href,
+                    $('#myModalContent').load(this.href,
                         function () {
-                            $("#myModal").modal({
+                            $('#myModal').modal({
                                 keyboard: true
                             },
                                 'show');
@@ -100,19 +99,18 @@ function AjaxModal() {
         });
 
         function bindForm(dialog) {
-
             $('form', dialog).submit(function () {
                 $.ajax({
                     url: this.action,
                     type: this.method,
                     data: $(this).serialize(),
                     success: function (result) {
-                        if (result.sucess) {
+                        if (result.success) {
                             $('#myModal').modal('hide');
-                            $('#EnderecoTarget').load(result.url);
+                            $('#EnderecoTarget').load(result.url); // Carrega o resultado HTML para a div demarcada
                         } else {
-                            $("#myModalContent").html(result);
-                            bindForm(dialogo);
+                            $('#myModalContent').html(result);
+                            bindForm(dialog);
                         }
                     }
                 });
