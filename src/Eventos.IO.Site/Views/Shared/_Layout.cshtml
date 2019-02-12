@@ -1,4 +1,6 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@using Eventos.IO.Domain.Interfaces
+@inject IUser user
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +20,7 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 
     </environment>
-    @Html.Raw(JavaScriptSnippet.FullScript)
+
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -30,13 +32,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Eventos.IO.Site</a>
+                <a asp-area="" asp-controller="Eventos" asp-action="Index" class="navbar-brand">Eventos.IO.Site</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Eventos" asp-action="Index">Próximos Eventos</a></li>
+                    @{
+                        if (user.IsAuthenticated())
+                        {
+                            <li><a asp-area="" asp-controller="Eventos" asp-action="MeusEventos">Meus Eventos</a></li>
+                        }
+                    }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

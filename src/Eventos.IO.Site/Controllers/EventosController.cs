@@ -24,6 +24,11 @@ namespace Eventos.IO.Site.Controllers
             return View(_eventoAppService.ObterTodos());
         }
 
+        public IActionResult MeusEventos()
+        {
+            return View(_eventoAppService.ObterEventoPorOrganizador(organizadorId));
+        }
+
         public IActionResult Details(Guid? id)
         {
             if (id == null)
