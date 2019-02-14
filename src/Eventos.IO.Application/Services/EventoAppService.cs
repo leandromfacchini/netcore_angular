@@ -4,6 +4,7 @@ using Eventos.IO.Application.ViewModels;
 using Eventos.IO.Domain.Core.Bus;
 using Eventos.IO.Domain.Eventos.Commands;
 using Eventos.IO.Domain.Eventos.Repository;
+using Eventos.IO.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -14,12 +15,14 @@ namespace Eventos.IO.Application.Services
         private readonly IBus _bus;
         private readonly IMapper _mapper;
         private readonly IEventoRepository _eventoRepository;
+        private readonly IUser _user;
 
-        public EventoAppService(IBus bus, IMapper mapper, IEventoRepository eventoRepository)
+        public EventoAppService(IBus bus, IMapper mapper, IEventoRepository eventoRepository, IUser user)
         {
             _bus = bus;
             _mapper = mapper;
             _eventoRepository = eventoRepository;
+            _user = user;
         }
 
         public void Registrar(EventoViewModel eventoViewModel)
@@ -35,6 +38,7 @@ namespace Eventos.IO.Application.Services
 
         public EventoViewModel ObterPorId(Guid id)
         {
+            var evento = _eventoRepository.ObterPorId(id);
             return _mapper.Map<EventoViewModel>(_eventoRepository.ObterPorId(id));
         }
 
