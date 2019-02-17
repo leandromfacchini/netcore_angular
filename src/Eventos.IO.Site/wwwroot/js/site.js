@@ -3,27 +3,11 @@
     $.validator.methods.range = function (value, element, param) {
         var globalizedValue = value.replace(",", ".");
         return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
-    }
+    };
 
     $.validator.methods.number = function (value, element) {
         return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
-    }
-
-    $('#DataInicio').datepicker({
-        format: "dd/mm/yyyy",
-        startDate: "tomorrow",
-        language: "pt-BR",
-        orientation: "bottom right",
-        autoclose: true
-    });
-
-    $('#DataFim').datepicker({
-        format: "dd/mm/yyyy",
-        startDate: "tomorrow",
-        language: "pt-BR",
-        orientation: "bottom right",
-        autoclose: true
-    });
+    };
 
     toastr.options = {
         "closeButton": false,
@@ -42,6 +26,36 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+
+    toastr.options.onHidden = function () {
+        window.location = "http://localhost:53061/Eventos/MeusEventos";
+    };
+
+    toastr.options.onclick = function () {
+        window.location = "http://localhost:53061/Eventos/MeusEventos";
+    };
+
+
+    toastr.options.onCloseClick = function () {
+        window.location = "http://localhost:53061/Eventos/MeusEventos";
+    };
+
+    $('#DataInicio').datepicker({
+        format: "dd/mm/yyyy",
+        startDate: "tomorrow",
+        language: "pt-BR",
+        orientation: "bottom right",
+        autoclose: true
+    });
+
+    $('#DataFim').datepicker({
+        format: "dd/mm/yyyy",
+        startDate: "tomorrow",
+        language: "pt-BR",
+        orientation: "bottom right",
+        autoclose: true
+    });
+
 
     $(document).ready(function () {
 
