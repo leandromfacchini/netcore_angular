@@ -1,21 +1,22 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using Eventos.IO.Application.Interfaces;
+using Eventos.IO.Application.ViewModels;
+using Eventos.IO.Domain.Core.Notifications;
+using Eventos.IO.Domain.Interfaces;
+using Eventos.IO.Infra.CrossCutting.Identity.AccountViewModels;
+using Eventos.IO.Infra.CrossCutting.Identity.Models;
+using Eventos.IO.Infra.CrossCutting.Identity.Models.AccountViewModels;
+using Eventos.IO.Infra.CrossCutting.Identity.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Eventos.IO.Domain.Core.Notifications;
-using Eventos.IO.Application.Interfaces;
-using Eventos.IO.Application.ViewModels;
 using System;
-using Eventos.IO.Domain.Interfaces;
-using Eventos.IO.Infra.CrossCutting.Identity.Models;
-using Eventos.IO.Infra.CrossCutting.Identity.Services;
-using Eventos.IO.Infra.CrossCutting.Identity.Models.AccountViewModels;
-using Eventos.IO.Infra.CrossCutting.Identity.AccountViewModels;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Eventos.IO.Site.Controllers
 {
@@ -123,6 +124,10 @@ namespace Eventos.IO.Site.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                user.Claims.Add(new IdentityUserClaim<string> { ClaimType = "Eventos", ClaimValue = "Ler" });
+                user.Claims.Add(new IdentityUserClaim<string> { ClaimType = "Eventos", ClaimValue = "Gravar" });
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -161,7 +166,7 @@ namespace Eventos.IO.Site.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(EventosController.Index), "Eventos");
         }
 
         //
@@ -489,7 +494,7 @@ namespace Eventos.IO.Site.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(EventosController.Index), "Eventos");
             }
         }
 
