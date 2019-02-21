@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="microsoft.aspnetcore.hosting.abstractions" Version="1.1.1" />
+    <PackageReference Include="microsoft.aspnetcore.http.abstractions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="1.1.1" />
+    <PackageReference Include="microsoft.aspnetcore.mvc.abstractions" Version="1.1.2" />
+    <PackageReference Include="microsoft.aspnetcore.mvc.viewfeatures" Version="1.1.2" />
+  </ItemGroup>
+</Project>

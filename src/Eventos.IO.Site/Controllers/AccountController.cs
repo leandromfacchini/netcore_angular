@@ -473,7 +473,7 @@ namespace Eventos.IO.Site.Controllers
         [HttpGet]
         public IActionResult AccessDenied()
         {
-            return View();
+            return RedirectToAction("Erros", "Erros", new { id = 203 });
         }
 
         #region Helpers

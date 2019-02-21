@@ -51,7 +51,6 @@ namespace Eventos.IO.Site.Controllers
             return View(eventoViewModel);
         }
 
-        [Authorize]
         [Route("novo-evento")]
         [Authorize(Policy = "PodeGravar")]
         public IActionResult Create()
@@ -59,7 +58,6 @@ namespace Eventos.IO.Site.Controllers
             return View();
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("novo-evento")]
