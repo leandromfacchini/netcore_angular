@@ -11,6 +11,10 @@ using Eventos.IO.Infra.CrossCutting.IoC;
 using AutoMapper;
 using Eventos.IO.Infra.CrossCutting.Identity.Data;
 using Eventos.IO.Infra.CrossCutting.Identity.Models;
+using Eventos.IO.Infra.CrossCutting.AspNetFilters;
+using Microsoft.AspNetCore.Mvc;
+using Elmah.Io.AspNetCore;
+using System;
 
 namespace Eventos.IO.Site
 {
@@ -49,7 +53,19 @@ namespace Eventos.IO.Site
                 options.AddPolicy("PodeGravar", policy => policy.RequireClaim("Eventos", "Gravar"));
             });
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new ServiceFilterAttribute(typeof(GlobalExceptionHandlingFilter)));
+            });
+
+            services.AddLogging();
+
+            services.AddElmahIo(o =>
+            {
+                o.ApiKey = "b731ce81cbd549378eebb4dbd6b5856f";
+                o.LogId = new Guid("3c4827a0-aac0-4db1-844b-2a1f74a84b57");
+            });
+
             services.AddAutoMapper();
 
             RegisterServices(services);
@@ -57,11 +73,12 @@ namespace Eventos.IO.Site
 
         public void Configure(IApplicationBuilder app,
                               IHostingEnvironment env,
-                               ILoggerFactory loggerFactory,
-                               IHttpContextAccessor accessor)
+                              ILoggerFactory loggerFactory,
+                              IHttpContextAccessor accessor)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            
 
             if (env.IsDevelopment())
             {
@@ -74,6 +91,8 @@ namespace Eventos.IO.Site
                 app.UseExceptionHandler("/erro-de-aplicacao");
                 app.UseStatusCodePagesWithReExecute("/erro-de-aplicacao/{0}");
             }
+
+            app.UseElmahIo();
 
             app.UseStaticFiles();
             app.UseIdentity();
