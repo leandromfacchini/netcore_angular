@@ -15,6 +15,7 @@ using Eventos.IO.Infra.CrossCutting.AspNetFilters;
 using Microsoft.AspNetCore.Mvc;
 using Elmah.Io.AspNetCore;
 using System;
+using Elmah.Io.Extensions.Logging;
 
 namespace Eventos.IO.Site
 {
@@ -60,12 +61,6 @@ namespace Eventos.IO.Site
 
             services.AddLogging();
 
-            services.AddElmahIo(o =>
-            {
-                o.ApiKey = "b731ce81cbd549378eebb4dbd6b5856f";
-                o.LogId = new Guid("3c4827a0-aac0-4db1-844b-2a1f74a84b57");
-            });
-
             services.AddAutoMapper();
 
             RegisterServices(services);
@@ -78,7 +73,10 @@ namespace Eventos.IO.Site
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
+
+            loggerFactory.AddElmahIo("b731ce81cbd549378eebb4dbd6b5856f", new Guid("3c4827a0-aac0-4db1-844b-2a1f74a84b57"));
+
+            app.UseElmahIo("b731ce81cbd549378eebb4dbd6b5856f", new Guid("3c4827a0-aac0-4db1-844b-2a1f74a84b57"));
 
             if (env.IsDevelopment())
             {
@@ -92,7 +90,7 @@ namespace Eventos.IO.Site
                 app.UseStatusCodePagesWithReExecute("/erro-de-aplicacao/{0}");
             }
 
-            app.UseElmahIo();
+
 
             app.UseStaticFiles();
             app.UseIdentity();

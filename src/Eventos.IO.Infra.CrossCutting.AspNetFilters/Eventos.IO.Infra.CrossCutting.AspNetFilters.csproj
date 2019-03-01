@@ -5,10 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="autorest" Version="0.17.3" />
+    <PackageReference Include="elmah.io.client" Version="3.4.62-pre" />
     <PackageReference Include="microsoft.aspnetcore.hosting.abstractions" Version="1.1.1" />
     <PackageReference Include="microsoft.aspnetcore.http.abstractions" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="1.1.1" />
     <PackageReference Include="microsoft.aspnetcore.mvc.abstractions" Version="1.1.2" />
     <PackageReference Include="microsoft.aspnetcore.mvc.viewfeatures" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.5" />
   </ItemGroup>
 </Project>
