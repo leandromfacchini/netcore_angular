@@ -1,9 +1,14 @@
 ﻿using Elmah.Io.Client;
+using Elmah.Io.Client.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Eventos.IO.Infra.CrossCutting.AspNetFilters
 {
@@ -30,7 +35,6 @@ namespace Eventos.IO.Infra.CrossCutting.AspNetFilters
                     Hostname = context.HttpContext.Request.Host.ToString(),
                     AreaAccessed = context.HttpContext.Request.GetDisplayUrl(),
                     TimeStamp = DateTime.Now,
-
                 };
 
                 _logger.LogInformation(1, data.ToString(), "Log de Auditoria");
@@ -63,9 +67,23 @@ namespace Eventos.IO.Infra.CrossCutting.AspNetFilters
 
         }
 
+        private static List<Item> Form(HttpContext httpContext)
+        {
+            try
+            {
+                return httpContext.Request?.Form?.Keys.Select(c => new Item(c, httpContext.Request.Form[c])).ToList();
+            }
+            catch (InvalidOperationException)
+            {
+                //Request not a form POST or similar
+            }
+
+            return null;
+        }
+
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         //public void OnException(ExceptionContext context)

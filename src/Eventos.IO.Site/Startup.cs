@@ -57,6 +57,7 @@ namespace Eventos.IO.Site
             services.AddMvc(options =>
             {
                 options.Filters.Add(new ServiceFilterAttribute(typeof(GlobalExceptionHandlingFilter)));
+                options.Filters.Add(new ServiceFilterAttribute(typeof(GlobalActionLogger)));
             });
 
             services.AddLogging();

@@ -71,7 +71,10 @@ namespace Eventos.IO.Infra.CrossCutting.IoC
 
             //Infra - Filtros
             services.AddScoped<ILogger<GlobalExceptionHandlingFilter>, Logger<GlobalExceptionHandlingFilter>>();
+            services.AddScoped<ILogger<GlobalActionLogger>, Logger<GlobalActionLogger>>();
+
             services.AddScoped<GlobalExceptionHandlingFilter>();
+            services.AddScoped<GlobalActionLogger>();
         }
     }
 }

@@ -101,7 +101,8 @@ namespace Eventos.IO.Site.Controllers
             return View(eventoViewModel);
         }
 
-        [ValidateAntiForgeryToken] 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("editar-evento/{id:guid}")]
         [Authorize(Policy = "PodeGravar")]
         public IActionResult Edit(EventoViewModel eventoViewModel)
