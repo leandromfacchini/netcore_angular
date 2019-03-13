@@ -28,7 +28,7 @@ namespace Eventos.IO.Services.Api.Controllers
                                  ILoggerFactory loggerFactory,
                                  IBus bus,
                                  IDomainNotificationHandler<DomainNotification> notifications,
-                                 IUser _user) : base(notifications, _user)
+                                 IUser _user) : base(notifications, _user, bus)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -66,12 +66,27 @@ namespace Eventos.IO.Services.Api.Controllers
             return Response(model);
         }
 
-        private void AdicionarErrosIdentity(IdentityResult result)
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("conta")]
+        public async Task<IActionResult> Login([FromBody]LoginViewModel model)
         {
-            foreach (var error in result.Errors)
+            if (!ModelState.IsValid)
             {
-                _bus.RaiseEvent(new DomainNotification(result.ToString(), error.Description));
+                NotificarErroModelInvalida();
+                return Response(model);
             }
+
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: true);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation(1, "Usuario logado com sucesso");
+                return Response(model);
+            }
+
+            NotificarErro(result.ToString(), "Falha ao realizar o login");
+            return Response(model);
         }
     }
 }
