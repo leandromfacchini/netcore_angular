@@ -13,8 +13,7 @@ using System.Threading.Tasks;
 
 namespace Eventos.IO.Services.Api.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/Account")]
+    //[Produces("application/json")]
     public class AccountController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -40,8 +39,13 @@ namespace Eventos.IO.Services.Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("nova-conta")]
-        public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
+        public async Task<IActionResult> Register([FromBody]RegisterViewModel model, int version)
         {
+            if (version == 2)
+            {
+                return Response(new { Message = "API V2 NÃO DISPONIVEL" });
+            }
+
             if (!ModelState.IsValid) return Response(model);
 
             var user = new ApplicationUser { UserName = model.Email, Email = model.Email };

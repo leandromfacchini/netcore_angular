@@ -3,14 +3,19 @@ using Eventos.IO.Infra.CrossCutting.Bus;
 using Eventos.IO.Infra.CrossCutting.Identity.Data;
 using Eventos.IO.Infra.CrossCutting.Identity.Models;
 using Eventos.IO.Infra.CrossCutting.IoC;
+using Eventos.IO.Services.Api.Configurations;
+using Eventos.IO.Services.Api.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Eventos.IO.Services.Api
 {
@@ -40,8 +45,36 @@ namespace Eventos.IO.Services.Api
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddOptions();
+            services.AddMvc(options =>
+            {
+                options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
+                options.UseCentralRoutePrefix(new RouteAttribute("api/v{version}"));
+            });
+
             services.AddAutoMapper();
+
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new Info()
+                {
+                    Version = "v1",
+                    Title = "Eventos.IO.API",
+                    Description = "API do site Eventos.IO",
+                    TermsOfService = "Nenhum",
+                    Contact = new Contact
+                    {
+                        Name = "Desenvolvedor",
+                        Email = "eamil@email.io",
+                        Url = "http://eventos.io",
+                    },
+                    License = new License
+                    {
+                        Name = "MIT",
+                        Url = "http://eventos.io"
+                    }
+                });
+            });
 
             //Registar todos os DI
             RegisterServices(services);
@@ -64,6 +97,13 @@ namespace Eventos.IO.Services.Api
             app.UseStaticFiles();
             app.UseIdentity();
             app.UseMvc();
+
+            app.UseSwaggerAuthorized();
+            app.UseSwagger();
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Eventos.IO.API.v1.0");
+            });
 
             InMemoryBus.ContainerAccessor = () => acesssor.HttpContext.RequestServices;
         }
