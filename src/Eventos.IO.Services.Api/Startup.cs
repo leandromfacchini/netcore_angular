@@ -1,21 +1,27 @@
 ﻿using AutoMapper;
 using Eventos.IO.Infra.CrossCutting.Bus;
+using Eventos.IO.Infra.CrossCutting.Identity.Authorization;
 using Eventos.IO.Infra.CrossCutting.Identity.Data;
 using Eventos.IO.Infra.CrossCutting.Identity.Models;
 using Eventos.IO.Infra.CrossCutting.IoC;
 using Eventos.IO.Services.Api.Configurations;
 using Eventos.IO.Services.Api.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Text;
 
 namespace Eventos.IO.Services.Api
 {
@@ -32,8 +38,9 @@ namespace Eventos.IO.Services.Api
         }
 
         public IConfigurationRoot Configuration { get; }
+        private const string SecretKey = "eventosio@meuambienteToken";
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
@@ -50,6 +57,28 @@ namespace Eventos.IO.Services.Api
             {
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
                 options.UseCentralRoutePrefix(new RouteAttribute("api/v{version}"));
+
+                var policy = new AuthorizationPolicyBuilder()
+                                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                                    .RequireAuthenticatedUser()
+                                    .Build();
+
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("PodeLerEventos", policy => policy.RequireClaim("Eventos", "Ler"));
+                options.AddPolicy("PodeGravar", policy => policy.RequireClaim("Eventos", "Gravar"));
+            });
+
+            var jwtAppSettingsOptions = Configuration.GetSection(nameof(JwtTokenOptions));
+
+            services.Configure<JwtTokenOptions>(options =>
+            {
+                options.Issuer = jwtAppSettingsOptions[nameof(JwtTokenOptions.Issuer)];
+                options.Audience = jwtAppSettingsOptions[nameof(JwtTokenOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
             });
 
             services.AddAutoMapper();

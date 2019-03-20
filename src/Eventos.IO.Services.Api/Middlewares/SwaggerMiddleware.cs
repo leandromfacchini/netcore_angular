@@ -36,7 +36,6 @@ namespace Eventos.IO.Services.Api.Middlewares
         public static IApplicationBuilder UseSwaggerAuthorized(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<SwaggerMiddleware>();
-
         }
     }
 }
