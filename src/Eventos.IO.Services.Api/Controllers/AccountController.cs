@@ -2,13 +2,17 @@ using Eventos.IO.Domain.Core.Bus;
 using Eventos.IO.Domain.Core.Notifications;
 using Eventos.IO.Domain.Interfaces;
 using Eventos.IO.Domain.Organizadores.Commands;
+using Eventos.IO.Infra.CrossCutting.Identity.Authorization;
 using Eventos.IO.Infra.CrossCutting.Identity.Models;
 using Eventos.IO.Infra.CrossCutting.Identity.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Eventos.IO.Services.Api.Controllers
@@ -21,10 +25,13 @@ namespace Eventos.IO.Services.Api.Controllers
         private readonly ILogger _logger;
         private readonly IBus _bus;
 
+        private readonly JwtTokenOptions _jwtTokenOptions;
+
         public AccountController(
                                  UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
                                  ILoggerFactory loggerFactory,
+                                 IOptions<JwtTokenOptions> jwtTokenOptions,
                                  IBus bus,
                                  IDomainNotificationHandler<DomainNotification> notifications,
                                  IUser _user) : base(notifications, _user, bus)
@@ -32,6 +39,9 @@ namespace Eventos.IO.Services.Api.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _bus = bus;
+            _jwtTokenOptions = jwtTokenOptions.Value;
+
+            ThrowIfInvalidOptions(_jwtTokenOptions);
 
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
@@ -91,6 +101,40 @@ namespace Eventos.IO.Services.Api.Controllers
 
             NotificarErro(result.ToString(), "Falha ao realizar o login");
             return Response(model);
+        }
+
+        private async Task<object> GerarTokenUsuario(LoginViewModel login)
+        {
+            var user = await _userManager.FindByEmailAsync(login.Email);
+            var userClaims = await _userManager.GetClaimsAsync(user);
+
+            userClaims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
+            userClaims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            userClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, await _jwtTokenOptions.JtiGenerator()));
+            userClaims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtTokenOptions.IssuedAt).ToString(), ClaimValueTypes.Integer));
+        }
+
+        private static long ToUnixEpochDate(DateTime date)
+               => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
+
+        private static void ThrowIfInvalidOptions(JwtTokenOptions options)
+        {
+            if (options == null) throw new ArgumentException(nameof(options));
+
+            if (options.ValidFor <= TimeSpan.Zero)
+            {
+                throw new ArgumentException("Must be a non-zero TimeSpan", nameof(JwtTokenOptions.ValidFor));
+            }
+
+            if (options.SigningCredentials == null)
+            {
+                throw new ArgumentNullException(nameof(JwtTokenOptions.SigningCredentials));
+            }
+
+            if (options.JtiGenerator == null)
+            {
+                throw new ArgumentNullException(nameof(JwtTokenOptions.JtiGenerator));
+            }
         }
     }
 }
