@@ -11,5 +11,6 @@ namespace Eventos.IO.Domain.Eventos.Repository
         Endereco ObterEnderecoPorId(Guid id);
         void AdicionarEndereco(Endereco endereco);
         void AtualizarEndereco(Endereco endereco);
+        IEnumerable<Categoria> ObterCategorias();
     }
 }

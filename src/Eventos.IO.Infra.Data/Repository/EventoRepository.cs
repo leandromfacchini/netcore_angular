@@ -27,6 +27,13 @@ namespace Eventos.IO.Infra.Data.Repository
             return Db.Database.GetDbConnection().Query<Evento>(sql);
         }
 
+        public IEnumerable<Categoria> ObterCategorias()
+        {
+            var sql = "SELECT * FROM CATEGORIAS";
+
+            return Db.Database.GetDbConnection().Query<Categoria>(sql);
+        }
+
         public void AtualizarEndereco(Endereco endereco)
         {
             Db.Enderecos.Update(endereco);
@@ -78,5 +85,7 @@ namespace Eventos.IO.Infra.Data.Repository
             evento.ExcluirEvento();
             Atualizar(evento);
         }
+
+
     }
 }

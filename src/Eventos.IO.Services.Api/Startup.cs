@@ -157,16 +157,16 @@ namespace Eventos.IO.Services.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();
-            app.UseIdentity();
-            app.UseMvc();
-
             app.UseSwaggerAuthorized();
             app.UseSwagger();
             app.UseSwaggerUI(s =>
             {
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "Eventos.IO.API.v1.0");
             });
+
+            app.UseStaticFiles();
+            app.UseIdentity();
+            app.UseMvc();           
 
             InMemoryBus.ContainerAccessor = () => acesssor.HttpContext.RequestServices;
         }
