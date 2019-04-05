@@ -73,12 +73,12 @@ namespace Eventos.IO.Services.Api
                 options.AddPolicy("PodeGravar", policy => policy.RequireClaim("Eventos", "Gravar"));
             });
 
-            var jwtAppSettingsOptions = Configuration.GetSection(nameof(JwtTokenOptions));
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtTokenOptions));
 
             services.Configure<JwtTokenOptions>(options =>
             {
-                options.Issuer = jwtAppSettingsOptions[nameof(JwtTokenOptions.Issuer)];
-                options.Audience = jwtAppSettingsOptions[nameof(JwtTokenOptions.Audience)];
+                options.Issuer = jwtAppSettingOptions[nameof(JwtTokenOptions.Issuer)];
+                options.Audience = jwtAppSettingOptions[nameof(JwtTokenOptions.Audience)];
                 options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
             });
 
@@ -119,15 +119,15 @@ namespace Eventos.IO.Services.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            var jwtAppSettings = Configuration.GetSection(nameof(JwtTokenOptions));
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtTokenOptions));
 
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidIssuer = jwtAppSettings[nameof(JwtTokenOptions.Issuer)],
+                ValidIssuer = jwtAppSettingOptions[nameof(JwtTokenOptions.Issuer)],
 
                 ValidateAudience = true,
-                ValidAudience = jwtAppSettings[nameof(JwtTokenOptions.Audience)],
+                ValidAudience = jwtAppSettingOptions[nameof(JwtTokenOptions.Audience)],
 
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = _signingKey,

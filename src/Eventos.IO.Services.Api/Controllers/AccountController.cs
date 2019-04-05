@@ -48,6 +48,19 @@ namespace Eventos.IO.Services.Api.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [Route("puta-merda")]
+        public async Task<IActionResult> PutaMerda([FromBody]RegisterViewModel model, int version)
+        {
+            if (version == 2)
+            {
+                return Response(new { Message = "API V2 NÃO DISPONIVEL" });
+            }
+
+            return Response(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
         [Route("nova-conta")]
         public async Task<IActionResult> Register([FromBody]RegisterViewModel model, int version)
         {
@@ -73,7 +86,9 @@ namespace Eventos.IO.Services.Api.Controllers
                 }
 
                 _logger.LogInformation(1, "Usuário criado com sucesso");
-                return Response(model);
+                var response = GerarTokenUsuario(new LoginViewModel() { Email = model.Email, Password = model.Password });
+
+                return Response(response);
             }
 
             AdicionarErrosIdentity(result);
@@ -96,7 +111,10 @@ namespace Eventos.IO.Services.Api.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation(1, "Usuario logado com sucesso");
-                return Response(model);
+
+                var response = GerarTokenUsuario(model);
+
+                return Response(response);
             }
 
             NotificarErro(result.ToString(), "Falha ao realizar o login");
@@ -112,6 +130,25 @@ namespace Eventos.IO.Services.Api.Controllers
             userClaims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             userClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, await _jwtTokenOptions.JtiGenerator()));
             userClaims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtTokenOptions.IssuedAt).ToString(), ClaimValueTypes.Integer));
+
+            var jwt = new JwtSecurityToken(
+                issuer: _jwtTokenOptions.Issuer,
+                audience: _jwtTokenOptions.Audience,
+                claims: userClaims,
+                notBefore: _jwtTokenOptions.NotBefore,
+                expires: _jwtTokenOptions.Expiration,
+                signingCredentials: _jwtTokenOptions.SigningCredentials);
+
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            var response = new
+            {
+                access_token = encodedJwt,
+                expires_in = (int)_jwtTokenOptions.ValidFor.TotalSeconds,
+                user = user
+            };
+
+            return response;
         }
 
         private static long ToUnixEpochDate(DateTime date)
