@@ -59,7 +59,8 @@ namespace Eventos.IO.Services.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "PodeGravar")]
+        [AllowAnonymous]
+        //[Authorize(Policy = "PodeGravar")]
         [Route("eventos")]
         public IActionResult Post([FromBody]RegistrarEventoCommand eventoCommand)
         {

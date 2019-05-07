@@ -48,19 +48,6 @@ namespace Eventos.IO.Services.Api.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("puta-merda")]
-        public async Task<IActionResult> PutaMerda([FromBody]RegisterViewModel model, int version)
-        {
-            if (version == 2)
-            {
-                return Response(new { Message = "API V2 NÃO DISPONIVEL" });
-            }
-
-            return Response(model);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
         [Route("nova-conta")]
         public async Task<IActionResult> Register([FromBody]RegisterViewModel model, int version)
         {
@@ -129,15 +116,15 @@ namespace Eventos.IO.Services.Api.Controllers
             userClaims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
             userClaims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             userClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, await _jwtTokenOptions.JtiGenerator()));
-            userClaims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtTokenOptions.IssuedAt).ToString(), ClaimValueTypes.Integer));
+            userClaims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtTokenOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64));
 
             var jwt = new JwtSecurityToken(
-                issuer: _jwtTokenOptions.Issuer,
-                audience: _jwtTokenOptions.Audience,
-                claims: userClaims,
-                notBefore: _jwtTokenOptions.NotBefore,
-                expires: _jwtTokenOptions.Expiration,
-                signingCredentials: _jwtTokenOptions.SigningCredentials);
+                  issuer: _jwtTokenOptions.Issuer,
+                  audience: _jwtTokenOptions.Audience,
+                  claims: userClaims,
+                  notBefore: _jwtTokenOptions.NotBefore,
+                  expires: _jwtTokenOptions.Expiration,
+                  signingCredentials: _jwtTokenOptions.SigningCredentials);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
@@ -152,7 +139,7 @@ namespace Eventos.IO.Services.Api.Controllers
         }
 
         private static long ToUnixEpochDate(DateTime date)
-               => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
+       => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
         private static void ThrowIfInvalidOptions(JwtTokenOptions options)
         {

@@ -5,7 +5,6 @@ using Eventos.IO.Infra.CrossCutting.Identity.Data;
 using Eventos.IO.Infra.CrossCutting.Identity.Models;
 using Eventos.IO.Infra.CrossCutting.IoC;
 using Eventos.IO.Services.Api.Configurations;
-using Eventos.IO.Services.Api.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -138,7 +137,7 @@ namespace Eventos.IO.Services.Api
                 ClockSkew = TimeSpan.Zero
             };
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions()
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
@@ -157,7 +156,7 @@ namespace Eventos.IO.Services.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwaggerAuthorized();
+            //app.UseSwaggerAuthorized();
             app.UseSwagger();
             app.UseSwaggerUI(s =>
             {
@@ -166,7 +165,7 @@ namespace Eventos.IO.Services.Api
 
             app.UseStaticFiles();
             app.UseIdentity();
-            app.UseMvc();           
+            app.UseMvc();
 
             InMemoryBus.ContainerAccessor = () => acesssor.HttpContext.RequestServices;
         }
