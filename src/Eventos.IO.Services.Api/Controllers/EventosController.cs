@@ -59,11 +59,18 @@ namespace Eventos.IO.Services.Api.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        //[Authorize(Policy = "PodeGravar")]
+        [Authorize(Policy = "PodeGravar")]
         [Route("eventos")]
-        public IActionResult Post([FromBody]RegistrarEventoCommand eventoCommand)
+        public IActionResult Post([FromBody]EventoViewModel eventoViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                NotificarErroModelInvalida();
+                return Response();
+            }
+
+            var eventoCommand = _mapper.Map<RegistrarEventoCommand>(eventoViewModel);
+
             _bus.SendCommand(eventoCommand);
             return Response(eventoCommand);
         }
